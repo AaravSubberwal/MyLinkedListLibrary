@@ -1,3 +1,20 @@
+/************************************************************************************************
+Author: Aarav Subberwal
+Date: 10/10/24
+
+While coding this I was actually unaware about that there already exists library for linked lists 
+in standard template library in C++. But anyway here's my own library for dealing with linked lists
+in C++. I tried to replicate the methods usually used in std::vector and made them reusuable for 
+LL's. In fact to define one you can just pass a vector as a arguement. This was supposed to be a 
+few hours project which I'm decently proud of. I feel like writing this library is the best way for
+a student to learn LL's and be proficient in them.
+
+Stuff to add:
+->reverse()
+->binary search
+->sort
+->DLL's
+**************************************************************************************************/
 #include <iostream>
 #include <vector>
 // reverse, search, sort, [] for indexing
@@ -223,6 +240,7 @@ public:
             current->next = nullptr;
         }
     }
+
     void merge(SLL other)
     {
         node *temp = p_head;
@@ -232,6 +250,34 @@ public:
         }
         temp->next = other.p_head;
     }
+
+    void reverse(){//gdbd
+        node *current = p_head;
+        node *prev=nullptr;
+        node* after=nullptr;
+        while (current->next!= nullptr){
+            after=current->next;
+            current->next=prev;
+            prev=current;
+            current=after;
+        }
+        p_head=prev;
+    }
+
+    bool linearsearch(int value){
+        node *current = p_head;
+        while (current->next!= nullptr){
+            if(value==current->val){
+                return true;
+            }
+            current=current->next;
+        }
+        return false;
+    }
+};
+
+class DLL{
+    
 };
 
 int main()
@@ -239,7 +285,5 @@ int main()
     std::vector<int> a = {1, 2, 3, 4};
 
     SLL b(a);
-    SLL c({5, 6, 7, 8});
-    b.merge(c);
     b.printlist();
 }
