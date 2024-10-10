@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-// reverse, search, delete, use at() for traversal, merge 2 sll, [] for indexing
+// reverse, search, sort, [] for indexing
 class node
 {
 public:
@@ -10,6 +10,11 @@ public:
     {
         val = data;
         next = nullptr;
+    }
+    node(int data, node *n)
+    {
+        val = data;
+        next = n;
     }
 };
 
@@ -58,6 +63,23 @@ public:
                 current = current->next;
             }
             return current->val;
+        }
+        else
+        {
+            std::cerr << "Index out of bonds";
+        }
+    }
+
+    node atNode(int index)
+    {
+        if ((index < n) && (index >= 0))
+        {
+            node *current = p_head;
+            for (int i = 0; i < index; i++)
+            {
+                current = current->next;
+            }
+            return *current;
         }
         else
         {
@@ -114,9 +136,43 @@ public:
                 current->next = newnode;
                 newnode->next = temp;
             }
+            else
+            {
+                std::cerr << "Index out of bounds";
+            }
         }
     }
-
+    void remove(int index) // remove(index)
+    {
+        if (index == 0)
+        { // remove first element
+            if (this->isempty())
+            {
+                std::cerr << "sll is empty";
+            }
+            else
+            {
+                node *temp = p_head;
+                p_head = p_head->next;
+                delete temp;
+            }
+        }
+        else if (index < n)
+        { // remove any element
+            node *current = p_head;
+            for (int i = 0; i < index - 1; i++)
+            {
+                current = current->next;
+            }
+            node *temp = current->next;
+            current->next = temp->next;
+            delete temp;
+        }
+        else
+        {
+            std::cerr << "index out of bonds";
+        }
+    }
     void printlist()
     {
         node *current = p_head;
@@ -159,18 +215,31 @@ public:
         else
         {
             node *current = p_head;
-            while (current->next != nullptr)
+            while (current->next->next != nullptr)
             {
                 current = current->next;
             }
+            delete current->next;
             current->next = nullptr;
         }
+    }
+    void merge(SLL other)
+    {
+        node *temp = p_head;
+        while (temp->next != nullptr)
+        {
+            temp = temp->next; // Traverse to the end of the first list
+        }
+        temp->next = other.p_head;
     }
 };
 
 int main()
 {
-    std::vector<int> a = {0, 1, 2, 3, 4};
+    std::vector<int> a = {1, 2, 3, 4};
+
     SLL b(a);
-    std::cout << b.at(2);
+    SLL c({5, 6, 7, 8});
+    b.merge(c);
+    b.printlist();
 }
