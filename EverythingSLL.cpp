@@ -10,7 +10,6 @@ few hours project which I'm decently proud of. I feel like writing this library 
 a student to learn LL's and be proficient in them.
 
 Stuff to add:
-->reverse()
 ->binary search
 ->sort
 ->DLL's
@@ -277,7 +276,7 @@ public:
 };
 
 class DLL{
-    
+
 };
 
 int main()
