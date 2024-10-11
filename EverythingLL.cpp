@@ -21,20 +21,17 @@ Stuff to add:
 class node
 {
 public:
-    node *next;
-    node *back;
+    node *next = nullptr;
+    node *back = nullptr;
     int val;
     node(int data)
     {
         val = data;
-        next = nullptr;
-        back=nullptr;
     }
     node(int data, node *n)
     {
         val = data;
         next = n;
-        back=nullptr;
     }
     node(int data, node *n, node *m)
     {
@@ -165,7 +162,9 @@ public:
             else
             {
                 std::cerr << "Index out of bounds";
+                exit;
             }
+            n++;
         }
     }
     void remove(int index) // remove(index)
@@ -198,6 +197,7 @@ public:
         {
             std::cerr << "index out of bonds";
         }
+        n--;
     }
     void printlist()
     {
@@ -230,6 +230,7 @@ public:
             }
             current->next = newtail;
         }
+        n++;
     }
 
     void pop_back()
@@ -248,6 +249,7 @@ public:
             delete current->next;
             current->next = nullptr;
         }
+        n--;
     }
 
     void merge(SLL other)
@@ -258,6 +260,7 @@ public:
             temp = temp->next; // Traverse to the end of the first list
         }
         temp->next = other.p_head;
+        n+=other.size();
     }
 
     void reverse()
@@ -292,29 +295,42 @@ public:
 
 class DLL
 {
-    public:
-    node *p_head=nullptr;
-    node *p_tail=nullptr;
+public:
+    node *p_head = nullptr;
+    node *p_tail = nullptr;
     int n;
-    DLL(std::vector<int> dll){
-        
+    DLL(std::vector<int> dll)
+    {
+
         if (dll.empty())
         {
             n = 0;
         }
         else
-        {   
-            p_head=new node(dll[0]);
+        {
+            p_head = new node(dll[0]);
             n = dll.size();
             node *current = p_head;
             node *temp;
             for (int i = 1; i < n; i++)
             {
                 current->next = new node(dll[i]);
-                temp=current;
+                temp = current;
                 current = current->next;
-                current->back=temp;
+                current->back = temp;
             }
+            current->next=nullptr;
+            p_tail=current;
+        }
+    }
+    ~DLL()
+    {
+        node *temp = p_head;
+        while (temp != nullptr)
+        {
+            node *nextnode = temp->next;
+            delete temp;
+            temp = nextnode;
         }
     }
     void printlist()
@@ -326,6 +342,120 @@ class DLL
             current = current->next;
         }
     }
+
+    int at(int index)
+    {
+        if ((index < n) && (index >= 0))
+        {
+            node *current = p_head;
+            for (int i = 0; i < index; i++)
+            {
+                current = current->next;
+            }
+            return current->val;
+        }
+        else
+        {
+            std::cerr << "Index out of bonds";
+        }
+    }
+
+    node atNode(int index)
+    {
+        if ((index < n) && (index >= 0))
+        {
+            node *current = p_head;
+            for (int i = 0; i < index; i++)
+            {
+                current = current->next;
+            }
+            return *current;
+        }
+        else
+        {
+            std::cerr << "Index out of bonds";
+        }
+    }
+
+    bool isempty()
+    {
+        if (n == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    void insert(int index, int data)
+    {
+        if (index == 0)
+        {
+            node *newnode = new node(data, p_head);
+            p_head->back = newnode;
+            p_head = newnode;
+            p_head->back = nullptr;
+        }
+        else if (index == n)
+        {
+            node *newtail = new node(data);
+            node *current = p_head;
+            while (current->next != nullptr)
+            {
+                current = current->next;
+            }
+            current->next = newtail;
+        }
+        else if (index < n)
+        {
+            node *newnode =new node(data);
+            node *current = p_head;
+            for(int i=0;i<index-1;i++){
+                current=current->next;
+            }
+            newnode->next=current->next;
+            newnode->back=current;
+            current->next->back=newnode;
+            current->next=newnode;
+        }
+        else
+        {
+            std::cerr << "Index out of bounds";
+            exit;
+        }
+        n++;
+    }
+    void remove(int index){
+        if(index==0){
+            node *temp=p_head;
+            p_head=p_head->next;
+            p_head->back=nullptr;
+            delete temp;
+        }
+        else if(index<n-1){
+            node *current = p_head;
+            for(int i=0;i<index-1;i++){
+                current=current->next;
+            }
+            node*temp=current->next;
+            current->next=current->next->next;
+            temp->next->back=current;
+            delete temp;
+        }
+        else if(index==n-1){
+            node *temp=p_tail;
+            p_tail=p_tail->back;
+            p_tail->next=nullptr;
+            delete temp;
+        }
+        else{
+            std::cerr<<"Index out of bonds";
+            exit;
+        }
+        n--;
+    }
 };
 
 int main()
@@ -333,5 +463,6 @@ int main()
     std::vector<int> a = {1, 2, 3, 4};
 
     DLL b(a);
+    b.remove(3);
     b.printlist();
 }
