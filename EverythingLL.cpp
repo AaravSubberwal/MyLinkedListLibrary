@@ -4,16 +4,16 @@ Date: 10/10/24
 
 While coding this I was actually unaware about that there already exists library for linked lists
 in standard template library in C++. But anyway here's my own library for dealing with linked lists
-in C++. I tried to replicate the methods usually used in std::vector and made them reusuable for
-LL's. In fact to define one you can just pass a vector as a arguement. This was supposed to be a
-few hours project which I'm decently proud of. I feel like writing this library is the best way for
-a student to learn LL's and be proficient in them.
+in C++. I tried to replicate the methods usually used in std::vector and made them reusable for LL's.
+In fact to define one you can just pass a vector as a arguement. This was supposed to be a few hours
+project which I'm decently proud of. I feel like writing this library is the best way for a student
+to learn LL's and be proficient in them.
 
 Stuff to add:
 ->binary search
 ->sort
-->DLL's
 ->define the dataype of LL
+->convert LL to vector
 **************************************************************************************************/
 #include <iostream>
 #include <vector>
@@ -106,7 +106,7 @@ public:
         }
         else
         {
-            std::cerr << "Index out of bonds";
+            std::cerr << "Index out of bounds";
         }
     }
 
@@ -260,7 +260,7 @@ public:
             temp = temp->next; // Traverse to the end of the first list
         }
         temp->next = other.p_head;
-        n+=other.size();
+        n += other.size();
     }
 
     void reverse()
@@ -312,6 +312,7 @@ public:
             n = dll.size();
             node *current = p_head;
             node *temp;
+            current->back=nullptr;
             for (int i = 1; i < n; i++)
             {
                 current->next = new node(dll[i]);
@@ -319,8 +320,8 @@ public:
                 current = current->next;
                 current->back = temp;
             }
-            current->next=nullptr;
-            p_tail=current;
+            current->next = nullptr;
+            p_tail = current;
         }
     }
     ~DLL()
@@ -407,18 +408,19 @@ public:
                 current = current->next;
             }
             current->next = newtail;
-        }
+        }   
         else if (index < n)
         {
-            node *newnode =new node(data);
+            node *newnode = new node(data);
             node *current = p_head;
-            for(int i=0;i<index-1;i++){
-                current=current->next;
+            for (int i = 0; i < index - 1; i++)
+            {
+                current = current->next;
             }
-            newnode->next=current->next;
-            newnode->back=current;
-            current->next->back=newnode;
-            current->next=newnode;
+            newnode->next = current->next;
+            newnode->back = current;
+            current->next->back = newnode;
+            current->next = newnode;
         }
         else
         {
@@ -427,34 +429,60 @@ public:
         }
         n++;
     }
-    void remove(int index){
-        if(index==0){
-            node *temp=p_head;
-            p_head=p_head->next;
-            p_head->back=nullptr;
+    void remove(int index)
+    {
+        if (index == 0)
+        {
+            node *temp = p_head;
+            p_head = p_head->next;
+            p_head->back = nullptr;
             delete temp;
         }
-        else if(index<n-1){
+        else if (index < n - 1)
+        {
             node *current = p_head;
-            for(int i=0;i<index-1;i++){
-                current=current->next;
+            for (int i = 0; i < index - 1; i++)
+            {
+                current = current->next;
             }
-            node*temp=current->next;
-            current->next=current->next->next;
-            temp->next->back=current;
+            node *temp = current->next;
+            current->next = current->next->next;
+            temp->next->back = current;
             delete temp;
         }
-        else if(index==n-1){
-            node *temp=p_tail;
-            p_tail=p_tail->back;
-            p_tail->next=nullptr;
+        else if (index == n - 1)
+        {
+            node *temp = p_tail;
+            p_tail = p_tail->back;
+            p_tail->next = nullptr;
             delete temp;
         }
-        else{
-            std::cerr<<"Index out of bonds";
+        else
+        {
+            std::cerr << "Index out of bonds";
             exit;
         }
         n--;
+    }
+
+    int size()
+    {
+        return n;
+    }
+
+    void reverse()
+    {
+        node *current = p_head;
+        node *temp = nullptr;
+        p_tail = p_head;
+        while (current != nullptr)
+        {
+            temp = current->next;
+            current->next = current->back;
+            current->back = temp;
+            current = current->back;
+        }
+        p_head = temp->back;
     }
 };
 
@@ -463,6 +491,6 @@ int main()
     std::vector<int> a = {1, 2, 3, 4};
 
     DLL b(a);
-    b.remove(3);
+    b.reverse();
     b.printlist();
 }
