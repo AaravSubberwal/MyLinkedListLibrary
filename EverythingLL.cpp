@@ -692,7 +692,7 @@ public:
         }
     }
     void remove(int index)
-    {
+    {   
         if (index == 0)
         {
             node *temp = p_head;
@@ -718,7 +718,7 @@ public:
             }
             node *temp = current->next;
             current->next = current->next->next;
-            current->next->back=current;
+            current->next->back = current;
             delete temp;
         }
         else
