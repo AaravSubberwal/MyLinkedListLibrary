@@ -5,7 +5,7 @@ Date: 10/10/24
 While coding this I was actually unaware about that there already exists library for linked lists
 in standard template library in C++. But anyway here's my own library for dealing with linked lists
 in C++. I tried to replicate the methods usually used in std::vector and made them reusable for LL's.
-In fact to define one you can just pass a vector as a arguement. This was supposed to be a few hours
+In fact to define one you can just pass a vector as a argument. This was supposed to be a few hours
 project which I'm decently proud of. I feel like writing this library is the best way for a student
 to learn LL's and be proficient in them.
 
@@ -574,6 +574,7 @@ public:
             p_head = temp->next;
             p_tail->next = p_head;
             delete temp;
+            n--;
         }
         else if (index == n - 1)
         {
@@ -586,6 +587,7 @@ public:
             current = current->next;
             delete current;
             p_tail->next = p_head;
+            n--;
         }
         else if (index < n - 1)
         {
@@ -597,6 +599,7 @@ public:
             node *temp = current->next;
             current->next = current->next->next;
             delete temp;
+            n--;
         }
         else
         {
@@ -733,7 +736,7 @@ int main()
     std::vector<int> a = {1, 2, 3, 4, 5, 6};
 
     CDLL b(a);
-    b.remove(2);
+    b.remove(20);
     b.printlist();
     // std::cout<<;
 }
