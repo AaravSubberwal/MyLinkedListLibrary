@@ -117,15 +117,15 @@ public:
         {
             node *temp = top;
             top = nullptr;
-            int topdata=temp->val;
+            int topdata = temp->val;
             delete temp;
-            n=0;
+            n = 0;
             return topdata;
         }
         else
         {
             node *temp = top;
-            int topdata=temp->val;
+            int topdata = temp->val;
             top = top->next;
             delete temp;
             n--;
@@ -140,32 +140,121 @@ public:
     {
         return n;
     }
-    bool isempty(){
-        if(top==nullptr){
+    bool isempty()
+    {
+        if (top == nullptr)
+        {
             return true;
         }
-        else{
+        else
+        {
             return false;
         }
     }
 };
 
-class queue{
-    
+class queue_arr
+{
+    int front = -1;
+    int back = -1;
+    const static int n = 100;
+    int que[n];
+    void push(int x)
+    {
+        if (back == n - 1)
+        {
+            cerr << "queue overflow";
+            return;
+        }
+        back++;
+        que[back] = x;
+        if (front == -1)
+        {
+            front = 0;
+        }
+    }
+    int pop()
+    {
+        if (front = -1 || front > back)
+        {
+            return -1;
+        }
+        front++;
+        return que[front - 1];
+    }
+    int peek()
+    {
+        if (front = -1 || front > back)
+        {
+            return -1;
+        }
+        return que[front];
+    }
+    bool isempty()
+    {
+        if (front = -1 || front > back)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 };
 
-int main()
+class queue_LL
 {
-    stack_LL a;
-    a.push(0);
-    a.push(1);
-    a.push(2);
-    a.push(3);
-    a.push(3);
-    a.printit();
-    cout << "\n\n"
-         << a.peek();
-    ;
+    node *front;
+    node *back;
+    int n=0;
+    queue_LL()
+    {
+        front = nullptr;
+        back = nullptr;
+    }
+    void push(int x)
+    {
+        if (front == nullptr)
+        {
+            node *newnode = new node(x);
+            front = newnode;
+            back = newnode;
+        }
+        else
+        {
+            back->next = new node(x);
+            back=back->next;
+        }
+        n++;
+    }
+    int pop(){
+        if (front == nullptr) {  
+            cerr << "Queue is empty" << endl;
+            return -1;  
+        }
+        node* temp = front;
+        int toreturn = front->val;
+        front = front->next;
+        if (front == nullptr) {  
+            back = nullptr;
+        }
+        delete temp;
+        n--;
+        return toreturn;
+    }
+    int peek(){
+        if (front == nullptr) {
+            cerr << "Queue is empty" << endl;
+            return -1;  
+        }
+        return front->val;
+    }
+    int size(){
+        return n;
+    }
+    bool isempty() {
+        return (front == nullptr);
+    }
+};
 
-    return 0;
-}
