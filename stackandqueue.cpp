@@ -2,9 +2,10 @@
 using namespace std;
 class stack_arr
 {
-public:
+private:
     int stackk[100];
     int top = -1;
+public:
     void push(int x)
     {
         if (top == 99)
@@ -76,9 +77,10 @@ public:
 
 class stack_LL
 {
-public:
+private:
     node *top;
     int n = 0;
+public:
     stack_LL()
     {
         top = nullptr;
@@ -257,4 +259,5 @@ class queue_LL
         return (front == nullptr);
     }
 };
+
 
